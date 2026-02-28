@@ -1,69 +1,65 @@
 # ODS → XLSX Converter
-Конвертер доступен по адресу: https://kestgalax.github.io/ods-xlsx/
 
-Конвертер ODS-файлов в XLSX прямо в браузере. Файл не покидает устройство — вся обработка на клиенте через SheetJS.
+Browser-based converter for ODS files to XLSX format. Files never leave your device — all processing happens client-side using SheetJS.
 
-## Стек
+**Live demo:** https://kestgalax.github.io/ods-xlsx/
+
+## Tech Stack
 
 - React 18 + TypeScript
 - Vite
 - Tailwind CSS
 - shadcn/ui (Card, Button, Badge, Table, Tabs, Progress, Alert, ScrollArea, Separator)
-- [SheetJS (xlsx)](https://sheetjs.com/) — чтение ODS, запись XLSX
+- [SheetJS (xlsx)](https://sheetjs.com/) — reads ODS, writes XLSX
 
-## Быстрый старт
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Откроется http://localhost:5173
+Open http://localhost:5173
 
-## Сборка для продакшена
+## Production Build
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Деплой
+## Deployment
 
-### GitHub Pages
+Push to main branch — GitHub Actions will deploy automatically.
 
-```bash
-git push
-```
-
-Деплой запускается автоматически через GitHub Actions. Сайт доступен по адресу: https://kestgalax.github.io/ods-xlsx/
-
-## Структура
+## Project Structure
 
 ```
 src/
-├── App.tsx              # корень, подключает ThemeProvider
-├── OdsConverter.tsx     # основной компонент
-├── theme.tsx            # провайдер светлой/тёмной темы
-├── index.css            # Tailwind + shadcn CSS-переменные
-└── components/ui/       # shadcn-компоненты
+├── App.tsx              # root, wraps with ThemeProvider
+├── OdsConverter.tsx     # main component
+├── theme.tsx            # light/dark theme provider
+├── index.css            # Tailwind + shadcn CSS variables
+└── components/ui/       # shadcn UI components
 ```
 
-## Возможности
+## Features
 
-- Drag & drop или выбор через диалог
-- Поддержка `.ods` и `.xlsx`
-- Предпросмотр всех листов с переключением вкладок
-- Мета-информация: размер файлов, количество листов и строк
-- Скачивание готового `.xlsx`
-- Светлая / тёмная тема (автоопределение из системы, сохраняется в localStorage)
+- Drag & drop or file picker
+- Supports `.ods` and `.xlsx` files
+- Preview all sheets with tabbed interface
+- File metadata: size, sheet count, row count
+- Download converted `.xlsx`
+- Light / dark theme (auto-detected from system, persisted in localStorage)
+- Multi-language support (English, Russian)
 
-## Как встроить в своё приложение
+## Embedding in Your Project
 
-Компонент `OdsConverter.tsx` самодостаточен. Для встраивания в существующий проект:
+The `OdsConverter.tsx` component is self-contained. To embed in an existing project:
 
 ```bash
 npm install xlsx
 npx shadcn@latest add card button badge table tabs progress alert scroll-area separator
 ```
 
-Скопируйте `OdsConverter.tsx` и `theme.tsx`, оберните в `<ThemeProvider>`.
+Copy `OdsConverter.tsx` and `theme.tsx`, wrap with `<ThemeProvider>`.
