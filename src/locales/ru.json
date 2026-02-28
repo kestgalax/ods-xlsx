@@ -1,0 +1,31 @@
+{
+  "title": "ODS → XLSX Converter",
+  "subtitle": "Конвертация в браузере — файл не покидает устройство",
+  "dragAndDrop": "Перетащите файл или нажмите для выбора",
+  "supportedFormats": "Поддерживаются форматы",
+  "reading": "Читаем файл...",
+  "converting": "Конвертируем ODS → XLSX...",
+  "error": {
+    "unsupportedFormat": "Поддерживаются только форматы .ods и .xlsx",
+    "unknown": "Неизвестная ошибка"
+  },
+  "result": {
+    "originalFile": "Исходный файл",
+    "convertedFile": "Результат",
+    "sheets": "Листов",
+    "totalRows": "Строк (итого)",
+    "conversionDone": "конвертация выполнена локально, данные не отправлялись",
+    "dataPreview": "Предпросмотр данных",
+    "dataPreviewDesc": "Данные из сконвертированного файла",
+    "showingRows": "Показаны первые {{count}} строк из {{total}}",
+    "downloadAnother": "Загрузить другой файл",
+    "download": "Скачать {{filename}}"
+  },
+  "aria": {
+    "toggleTheme": "Переключить тему",
+    "toggleLanguage": "Переключить язык"
+  },
+  "status": {
+    "idle": "Client-side · SheetJS"
+  }
+}
