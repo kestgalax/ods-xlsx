@@ -1,3 +1,4 @@
+import './i18n'
 import { ThemeProvider } from './theme'
 import OdsConverter from './OdsConverter'
 

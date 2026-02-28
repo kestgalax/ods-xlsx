@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from './theme'
 import * as XLSX from 'xlsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,6 +31,7 @@ import {
   Layers,
   Sun,
   Moon,
+  Globe,
 } from 'lucide-react'
 
 type Status = 'idle' | 'reading' | 'converting' | 'done' | 'error'
@@ -51,6 +53,7 @@ interface ConvertResult {
 }
 
 export default function OdsConverter() {
+  const { t, i18n } = useTranslation()
   const { theme, toggle } = useTheme()
   const [status, setStatus] = useState<Status>('idle')
   const [progress, setProgress] = useState(0)
@@ -68,7 +71,7 @@ export default function OdsConverter() {
     const isXlsx = file.name.toLowerCase().endsWith('.xlsx')
 
     if (!isOds && !isXlsx) {
-      setError('Поддерживаются только форматы .ods и .xlsx')
+      setError(t('error.unsupportedFormat'))
       setStatus('error')
       return
     }
@@ -128,10 +131,10 @@ export default function OdsConverter() {
         xlsxBuffer: xlsxArray,
       })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Неизвестная ошибка')
+      setError(e instanceof Error ? e.message : t('error.unknown'))
       setStatus('error')
     }
-  }, [])
+  }, [t])
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
@@ -167,6 +170,11 @@ export default function OdsConverter() {
     return String(val)
   }
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'ru' : 'en'
+    i18n.changeLanguage(newLang)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
       <div className="max-w-5xl mx-auto space-y-6">
@@ -177,15 +185,24 @@ export default function OdsConverter() {
             <FileSpreadsheet className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">ODS → XLSX Converter</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Конвертация в браузере — файл не покидает устройство</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('title')}</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{t('subtitle')}</p>
           </div>
-          <Badge variant="secondary" className="ml-auto">Client-side · SheetJS</Badge>
+          <Badge variant="secondary" className="ml-auto">{t('status.idle')}</Badge>
+          <Button
+            variant="ghost"
+            onClick={toggleLanguage}
+            aria-label={t('aria.toggleLanguage')}
+            className="flex items-center gap-1.5 px-2 py-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
+          >
+            <Globe className="h-5 w-5" />
+            <span className="text-xs font-medium">{i18n.language.toUpperCase()}</span>
+          </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={toggle}
-            aria-label="Переключить тему"
+            aria-label={t('aria.toggleTheme')}
             className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
           >
             {theme === 'light'
@@ -228,10 +245,10 @@ export default function OdsConverter() {
                   </div>
                   <div>
                     <p className="text-base font-medium text-slate-700 dark:text-slate-200">
-                      Перетащите файл или нажмите для выбора
+                      {t('dragAndDrop')}
                     </p>
                     <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
-                      Поддерживаются форматы <span className="font-mono">.ods</span> и{' '}
+                      {t('supportedFormats')}: <span className="font-mono">.ods</span> и{' '}
                       <span className="font-mono">.xlsx</span>
                     </p>
                   </div>
@@ -240,7 +257,7 @@ export default function OdsConverter() {
                 <>
                   <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
                   <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
-                    {status === 'reading' ? 'Читаем файл...' : 'Конвертируем ODS → XLSX...'}
+                    {status === 'reading' ? t('reading') : t('converting')}
                   </p>
                   <Progress value={progress} className="w-48" />
                 </>
@@ -265,7 +282,7 @@ export default function OdsConverter() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription className="flex items-center gap-1">
-                    <FileCheck className="h-3 w-3" /> Исходный файл
+                    <FileCheck className="h-3 w-3" /> {t('result.originalFile')}
                   </CardDescription>
                   <CardTitle className="text-sm font-mono truncate">{result.originalName}</CardTitle>
                 </CardHeader>
@@ -277,7 +294,7 @@ export default function OdsConverter() {
               <Card className="border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/30">
                 <CardHeader className="pb-2">
                   <CardDescription className="flex items-center gap-1 text-green-700 dark:text-green-400">
-                    <CheckCircle2 className="h-3 w-3" /> Результат
+                    <CheckCircle2 className="h-3 w-3" /> {t('result.convertedFile')}
                   </CardDescription>
                   <CardTitle className="text-sm font-mono truncate text-green-800 dark:text-green-300">{result.convertedName}</CardTitle>
                 </CardHeader>
@@ -289,7 +306,7 @@ export default function OdsConverter() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription className="flex items-center gap-1">
-                    <Layers className="h-3 w-3" /> Листов
+                    <Layers className="h-3 w-3" /> {t('result.sheets')}
                   </CardDescription>
                   <CardTitle className="text-3xl font-bold">{result.sheets.length}</CardTitle>
                 </CardHeader>
@@ -298,7 +315,7 @@ export default function OdsConverter() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardDescription className="flex items-center gap-1">
-                    <BarChart3 className="h-3 w-3" /> Строк (итого)
+                    <BarChart3 className="h-3 w-3" /> {t('result.totalRows')}
                   </CardDescription>
                   <CardTitle className="text-3xl font-bold">
                     {result.sheets.reduce((s, sh) => s + sh.rowCount, 0)}
@@ -317,15 +334,15 @@ export default function OdsConverter() {
               <ArrowRight className="h-4 w-4 text-blue-400" />
               <Badge variant="outline" className="font-mono">.xlsx</Badge>
               <Separator orientation="vertical" className="h-4" />
-              <span className="text-xs text-slate-400 dark:text-slate-500">конвертация выполнена локально, данные не отправлялись</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">{t('result.conversionDone')}</span>
             </div>
 
             {/* Sheet preview */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Предпросмотр данных</CardTitle>
+                <CardTitle className="text-base">{t('result.dataPreview')}</CardTitle>
                 <CardDescription>
-                  Данные из сконвертированного файла
+                  {t('result.dataPreviewDesc')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -375,7 +392,7 @@ export default function OdsConverter() {
                       </ScrollArea>
                       {sheet.rowCount > 101 && (
                         <p className="text-xs text-slate-400 mt-2 text-center">
-                          Показаны первые 100 строк из {sheet.rowCount - 1}
+                          {t('result.showingRows', { count: 100, total: sheet.rowCount - 1 })}
                         </p>
                       )}
                     </TabsContent>
@@ -388,11 +405,11 @@ export default function OdsConverter() {
             <div className="flex justify-end gap-3">
               <Button variant="outline" onClick={() => inputRef.current?.click()}>
                 <Upload className="h-4 w-4 mr-2" />
-                Загрузить другой файл
+                {t('result.downloadAnother')}
               </Button>
               <Button onClick={handleDownload} className="bg-green-600 hover:bg-green-700">
                 <Download className="h-4 w-4 mr-2" />
-                Скачать {result.convertedName}
+                {t('result.download', { filename: result.convertedName })}
               </Button>
             </div>
           </>

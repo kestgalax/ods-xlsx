@@ -1,0 +1,31 @@
+{
+  "title": "ODS → XLSX Converter",
+  "subtitle": "Browser-based conversion — file never leaves your device",
+  "dragAndDrop": "Drag & drop a file or click to select",
+  "supportedFormats": "Supported formats",
+  "reading": "Reading file...",
+  "converting": "Converting ODS → XLSX...",
+  "error": {
+    "unsupportedFormat": "Only .ods and .xlsx formats are supported",
+    "unknown": "Unknown error"
+  },
+  "result": {
+    "originalFile": "Original file",
+    "convertedFile": "Converted file",
+    "sheets": "Sheets",
+    "totalRows": "Total rows",
+    "conversionDone": "conversion done locally, no data sent",
+    "dataPreview": "Data Preview",
+    "dataPreviewDesc": "Data from converted file",
+    "showingRows": "Showing first {{count}} rows of {{total}}",
+    "downloadAnother": "Upload another file",
+    "download": "Download {{filename}}"
+  },
+  "aria": {
+    "toggleTheme": "Toggle theme",
+    "toggleLanguage": "Switch language"
+  },
+  "status": {
+    "idle": "Client-side · SheetJS"
+  }
+}
